@@ -504,3 +504,4 @@ if __name__ == "__main__":
     make_diagram6()
     make_diagram7()
     print("All 7 figures generated successfully in", OUT_DIR)
+
