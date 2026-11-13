@@ -24,3 +24,4 @@ htmlcov/
 # Runtime themes / temporary files
 gui/_runtime_theme.json
 *.log
+
