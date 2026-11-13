@@ -1,0 +1,41 @@
+{
+  "scenario_id": "spectre_v1_bounds_bypass",
+  "title": "Spectre v1: Bounds-Check Bypass",
+  "description": "Untrusted index bypasses bounds check speculatively, loading secret byte and warming L1 probe line.",
+  "secret_byte": 5,
+  "probe_base": 2048,
+  "probe_stride": 64,
+  "num_probe_slots": 8,
+  "dram_latency": 12,
+  "l1_config": {
+    "size_bytes": 1024,
+    "line_size": 64,
+    "associativity": 2,
+    "hit_latency": 1
+  },
+  "dram_words": {
+    "1024": 16,
+    "1280": 5,
+    "2048": 0,
+    "2112": 1,
+    "2176": 2,
+    "2240": 3,
+    "2304": 4,
+    "2368": 5,
+    "2432": 6,
+    "2496": 7
+  },
+  "assembly": [
+    "ADDI R1, R0, 0x0500",
+    "ADDI R2, R0, 0x0400",
+    "LW   R3, 0(R2)",
+    "BGE  R1, R3, safe_exit",
+    "LW   R4, 0(R1)",
+    "SLLI R5, R4, 6",
+    "LW   R6, 0x0800(R5)",
+    "safe_exit:",
+    "ADDI R7, R0, 1",
+    "HALT"
+  ]
+}
+

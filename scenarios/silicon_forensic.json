@@ -1,0 +1,29 @@
+{
+  "scenario_id": "forensic_dirty_tag_01",
+  "title": "Silicon Forensic: Dirty-Tag Crash Dump",
+  "description": "Scrub the crash timeline to find the cycle where a dirty L1 tag (0x02) was written before crash.",
+  "culprit_tag": 2,
+  "culprit_cycle_min": 6,
+  "culprit_cycle_max": 18,
+  "dram_latency": 4,
+  "l1_config": {
+    "size_bytes": 256,
+    "line_size": 64,
+    "associativity": 1,
+    "hit_latency": 1
+  },
+  "dram_words": {
+    "512": 42,
+    "768": 99
+  },
+  "assembly": [
+    "ADDI R1, R0, 0x0200",
+    "ADDI R2, R0, 0xBAD1",
+    "LW   R3, 0(R1)",
+    "SW   R2, 0(R1)",
+    "ADDI R4, R0, 0x0300",
+    "SW   R4, 0(R4)",
+    "HALT"
+  ]
+}
+

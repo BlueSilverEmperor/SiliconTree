@@ -1,0 +1,26 @@
+{
+  "scenario_id": "tycoon_edge_npu_01",
+  "title": "Architect Tycoon: Edge AI NPU Contract",
+  "client_name": "Kestrel Robotics",
+  "max_area_mm2": 42.0,
+  "max_power_w": 18.0,
+  "target_cpi": 3.5,
+  "dram_latency": 5,
+  "dram_words": {
+    "512": 3,
+    "768": 7,
+    "1024": 11
+  },
+  "assembly": [
+    "ADDI R1, R0, 0x0200",
+    "ADDI R2, R0, 0x0300",
+    "LW   R3, 0(R1)",
+    "LW   R4, 0(R2)",
+    "MUL  R5, R3, R4",
+    "ADD  R6, R5, R3",
+    "SW   R6, 0x0400(R0)",
+    "LW   R7, 0(R1)",
+    "ADD  R8, R7, R6",
+    "HALT"
+  ]
+}

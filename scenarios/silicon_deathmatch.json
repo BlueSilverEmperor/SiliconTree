@@ -1,0 +1,68 @@
+{
+  "scenario_id": "deathmatch_arena_01",
+  "title": "Silicon Deathmatch: Thermal Survival",
+  "max_thermal_hp": 100.0,
+  "conflict_miss_damage": 6.0,
+  "stall_heat": 0.4,
+  "retire_cooling": 0.2,
+  "dram_latency": 4,
+  "initial_l1": {
+    "size_bytes": 256,
+    "line_size": 64,
+    "associativity": 1,
+    "hit_latency": 1
+  },
+  "dram_words": {
+    "512": 10,
+    "768": 20,
+    "1024": 30,
+    "1280": 40
+  },
+  "waves": [
+    {
+      "name": "Wave 1: ALU & RAW Storm",
+      "assembly": [
+        "ADDI R1, R0, 5",
+        "ADDI R2, R0, 3",
+        "MUL  R3, R1, R2",
+        "ADD  R4, R3, R1",
+        "SUB  R5, R4, R2",
+        "HALT"
+      ]
+    },
+    {
+      "name": "Wave 2: Strided Cache Thrashing",
+      "assembly": [
+        "ADDI R1, R0, 0x0200",
+        "ADDI R2, R0, 0x0300",
+        "ADDI R3, R0, 0x0400",
+        "ADDI R4, R0, 0x0500",
+        "ADDI R10, R0, 3",
+        "thrash_loop:",
+        "LW   R5, 0(R1)",
+        "LW   R6, 0(R2)",
+        "LW   R7, 0(R3)",
+        "LW   R8, 0(R4)",
+        "ADDI R10, R10, -1",
+        "BNE  R10, R0, thrash_loop",
+        "HALT"
+      ]
+    },
+    {
+      "name": "Wave 3: Branch & Memory Chaos",
+      "assembly": [
+        "ADDI R1, R0, 0x0200",
+        "ADDI R2, R0, 0x0300",
+        "ADDI R3, R0, 4",
+        "chaos_loop:",
+        "LW   R4, 0(R1)",
+        "LW   R5, 0(R2)",
+        "MUL  R6, R4, R5",
+        "ADDI R3, R3, -1",
+        "BNE  R3, R0, chaos_loop",
+        "HALT"
+      ]
+    }
+  ]
+}
+

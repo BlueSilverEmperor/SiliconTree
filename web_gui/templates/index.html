@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SiliconTree — Architecture &amp; Hardware Security Lab</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+        <rect x="7" y="7" width="10" height="10" rx="1.5"/>
+        <path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/>
+      </svg>
+      <span class="brand-name">SiliconTree</span>
+    </div>
+
+    <nav class="mode-tabs" id="mode-tabs" aria-label="Simulation Modes"></nav>
+
+    <div class="transport" role="toolbar" aria-label="Clock Controls">
+      <button class="btn" id="btn-rewind" type="button" title="Rewind 1 cycle">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 3L4 8l5 5M14 3L9 8l5 5"/></svg>
+        <span>-1 Cyc</span>
+      </button>
+      <button class="btn btn-primary" id="btn-play" type="button">Play</button>
+      <button class="btn" id="btn-step" type="button" title="Step 1 cycle">
+        <span>+1 Cyc</span>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 3l5 5-5 5M2 3l5 5-5 5"/></svg>
+      </button>
+      <button class="btn" id="btn-reset" type="button">Reset</button>
+
+      <label class="speed-control" for="speed-slider">
+        <span id="speed-label">4 Hz</span>
+        <input id="speed-slider" type="range" min="1" max="20" step="1" value="4">
+      </label>
+    </div>
+
+    <dl class="telemetry-strip">
+      <div><dt>Cycle</dt><dd id="stat-cycle" class="num">0</dd></div>
+      <div><dt>Retired</dt><dd id="stat-retired" class="num">0</dd></div>
+      <div><dt>CPI</dt><dd id="stat-cpi" class="num">0.00</dd></div>
+      <div><dt>PC</dt><dd id="stat-pc" class="num">0x0000</dd></div>
+      <div><dt>State</dt><dd id="stat-state" class="state-pill">IDLE</dd></div>
+    </dl>
+  </header>
+
+  <main class="workspace">
+    <section class="panel panel-pipeline" aria-labelledby="hdr-pipeline">
+      <div class="panel-head">
+        <h2 id="hdr-pipeline">5-Stage Pipeline Conveyor (WB → MEM → EX → ID → IF)</h2>
+        <div class="panel-meta" id="pipeline-meta">Stalls: 0 · Flushes: 0</div>
+      </div>
+      <div class="pipeline-svg-wrap">
+        <svg id="pipeline-svg" viewBox="0 0 1200 175" preserveAspectRatio="xMidYMid meet" role="img" aria-label="5-stage RISC pipeline diagram"></svg>
+      </div>
+    </section>
+
+    <section class="panel panel-cache" aria-labelledby="hdr-cache">
+      <div class="panel-head">
+        <h2 id="hdr-cache">L1 / L2 Cache Matrix</h2>
+        <div class="panel-actions">
+          <button class="btn btn-sm" id="btn-toggle-l2" type="button" hidden>View L2</button>
+          <span class="panel-meta num" id="cache-stats">H:0 M:0 (0%) CM:0</span>
+        </div>
+      </div>
+      <div id="cache-grid" class="cache-grid"></div>
+      <div id="cache-inspector" class="cache-inspector num">Click any cache line to inspect 64-byte words.</div>
+    </section>
+
+    <section class="panel panel-bus" aria-labelledby="hdr-bus">
+      <div class="panel-head">
+        <h2 id="hdr-bus">System Bus &amp; I/O Fabric</h2>
+        <span class="panel-meta num" id="bus-meta">MULTI_BUS · DMA: 0w</span>
+      </div>
+      <div class="bus-svg-wrap">
+        <svg id="bus-svg" viewBox="0 0 640 210" preserveAspectRatio="xMidYMid meet" role="img" aria-label="System bus and DMA fabric topology"></svg>
+      </div>
+    </section>
+
+    <section class="panel panel-regs" aria-labelledby="hdr-regs">
+      <div class="panel-head">
+        <h2 id="hdr-regs">Register File &amp; RTN Log</h2>
+        <span class="panel-meta" id="pred-meta">2-BIT SAT</span>
+      </div>
+      <div id="reg-grid" class="reg-grid num"></div>
+      <div id="rtn-log" class="rtn-log num" aria-live="polite"></div>
+    </section>
+
+    <section class="panel panel-hud" aria-labelledby="hdr-hud">
+      <div class="panel-head">
+        <h2 id="hdr-hud">Mission Control</h2>
+        <span class="panel-meta" id="outcome-badge">IN PROGRESS</span>
+      </div>
+      <div id="mode-hud-body" class="mode-hud-body"></div>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
+
